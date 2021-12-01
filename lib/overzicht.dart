@@ -5,11 +5,29 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class Overzicht extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return Stack(children: [buildBase(context), buildUser(context)]);
+  }
+
+  Widget buildBase(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [Expanded(child: IncidentMap()), IncidentInfo()],
     );
+  }
+
+  Widget buildUser(BuildContext context) {
+    return Positioned(
+        right: 12,
+        top: 13,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(43),
+          child: Image.network(
+              'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/kaley-cuoco-1615625941.jpg',
+              fit: BoxFit.cover,
+              height: 86,
+              width: 86),
+        ));
   }
 }
 
