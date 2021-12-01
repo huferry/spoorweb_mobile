@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "372025908180",
+    "project_id": "spoorweb-mobile",
+    "storage_bucket": "spoorweb-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372025908180:android:4e8f7f39d493c57cf9d441",
+        "android_client_info": {
+          "package_name": "nl.prorail.spoorweb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372025908180-5qqc43v41m7aq5rlnhh1mto8bhs1jvna.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAskw0qM4vGQbtYQPg3pd4Vv3PN3GeOItI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372025908180-5qqc43v41m7aq5rlnhh1mto8bhs1jvna.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
