@@ -92,7 +92,8 @@ class IncidentInfo extends StatelessWidget {
     return Container(
         margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+            color: Color(0xFF737373),
+            borderRadius: BorderRadius.circular(10.0)),
         height: 200,
         child: Text('hello'));
   }
