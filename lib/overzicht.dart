@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 
 class Overzicht extends StatelessWidget {
   final incidentInfo = IncidentInfo();
@@ -46,6 +47,7 @@ class Overzicht extends StatelessWidget {
   }
 
   Widget buildBase(BuildContext context, List<Map<String, dynamic>> incidents) {
+    incidentInfo._state.incident = incidents.last;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -229,11 +231,12 @@ class IncidentInfoState extends State<IncidentInfo> {
       );
 
   Widget getLeftColumn() => Container(
-        margin: EdgeInsets.only(top: 10),
+        margin: EdgeInsets.only(top: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            getLocalTimeField('tijd voorval', incident['datumTijdVoorval']),
             getField('melder', incident['melder']),
             getField(
                 'treindienstleidergebied', incident['treindienstleidergebied']),
@@ -243,11 +246,12 @@ class IncidentInfoState extends State<IncidentInfo> {
       );
 
   Widget getRighColumn() => Container(
-        margin: EdgeInsets.only(top: 10),
+        margin: EdgeInsets.only(top: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            getLocalTimeField('prognose', incident['prognose']),
             getField('tis', incident['tis']),
             getField('slachtoffers', incident['slachtofers']),
             getField('impact', incident['impact'])
@@ -260,8 +264,14 @@ class IncidentInfoState extends State<IncidentInfo> {
 
   final valueStyle = TextStyle(color: Color(0xFFCECECE), fontSize: 12);
 
+  Widget getLocalTimeField(String name, String? value) {
+    if (value == null) return getField(name, '');
+    final format = DateFormat('kk:mm');
+    return getField(name, format.format(DateTime.parse(value).toLocal()));
+  }
+
   Widget getField(String name, String? value) => Container(
-        margin: EdgeInsets.only(top: 12),
+        margin: EdgeInsets.only(top: 6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
