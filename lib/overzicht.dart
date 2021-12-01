@@ -4,10 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Overzicht extends StatelessWidget {
+  void onMarkerTap(Map<String, dynamic> incident) {
+    print(incident['title']);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> _incidentStream =
-        FirebaseFirestore.instance.collection('incidents').snapshots();
+    Stream<QuerySnapshot> _incidentStream = FirebaseFirestore.instance
+        .collection('incidents')
+        .where('processStatus', isNotEqualTo: 'Open')
+        .snapshots();
 
     return StreamBuilder<QuerySnapshot>(
       stream: _incidentStream,
@@ -24,16 +30,24 @@ class Overzicht extends StatelessWidget {
           print(snapshot.data?.size);
         }
 
-        return Stack(children: [buildBase(context), buildUser(context)]);
+        var incidents = snapshot.data!.docs.map((DocumentSnapshot document) {
+          return document.data()! as Map<String, dynamic>;
+        }).toList();
+
+        return Stack(
+            children: [buildBase(context, incidents), buildUser(context)]);
       },
     );
   }
 
-  Widget buildBase(BuildContext context) {
+  Widget buildBase(BuildContext context, List<Map<String, dynamic>> incidents) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [Expanded(child: IncidentMap()), IncidentInfo()],
+      children: [
+        Expanded(child: IncidentMap(incidents, onMarkerTap)),
+        IncidentInfo()
+      ],
     );
   }
 
@@ -53,12 +67,18 @@ class Overzicht extends StatelessWidget {
 }
 
 class IncidentMap extends StatelessWidget {
+  final List<Map<String, dynamic>> incidents;
+  final void Function(Map<String, dynamic>) onMarkerTab;
+
+  IncidentMap(this.incidents, this.onMarkerTab);
+
   @override
   Widget build(BuildContext context) {
     return ClipPath(
       clipper: MyClipper(),
       child: ClipRRect(
-          borderRadius: BorderRadius.circular(20), child: MapDisplay()),
+          borderRadius: BorderRadius.circular(20),
+          child: MapDisplay(this.incidents, this.onMarkerTab)),
     );
   }
 }
@@ -83,6 +103,11 @@ class MyClipper extends CustomClipper<Path> {
 }
 
 class MapDisplay extends StatefulWidget {
+  final List<Map<String, dynamic>> incidents;
+  final void Function(Map<String, dynamic>) onMarkerTab;
+
+  MapDisplay(this.incidents, this.onMarkerTab);
+
   @override
   State<MapDisplay> createState() => MapDisplayState();
 }
@@ -97,11 +122,21 @@ class MapDisplayState extends State<MapDisplay> {
 
   @override
   Widget build(BuildContext context) {
+    final markers = widget.incidents
+        .map((i) => Marker(
+            infoWindow: InfoWindow(title: i['title']),
+            onTap: () => widget.onMarkerTab(i),
+            markerId: MarkerId(i['incidentId'].toString()),
+            position: LatLng(
+                double.parse(i['latitude']), double.parse(i['longitude']))))
+        .toSet();
+
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: _kGooglePlex,
       myLocationEnabled: true,
       myLocationButtonEnabled: true,
+      markers: markers,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },
