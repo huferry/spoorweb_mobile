@@ -1,11 +1,32 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Overzicht extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [buildBase(context), buildUser(context)]);
+    Stream<QuerySnapshot> _incidentStream =
+        FirebaseFirestore.instance.collection('incidents').snapshots();
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: _incidentStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text('loading');
+        }
+
+        if (snapshot.data != null) {
+          print(snapshot.data?.size);
+        }
+
+        return Stack(children: [buildBase(context), buildUser(context)]);
+      },
+    );
   }
 
   Widget buildBase(BuildContext context) {
@@ -79,6 +100,8 @@ class MapDisplayState extends State<MapDisplay> {
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: _kGooglePlex,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: true,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },
