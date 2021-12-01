@@ -1,4 +1,4 @@
-package com.example.spoorweb_mobile
+package nl.prorail.spoorweb
 
 import io.flutter.embedding.android.FlutterActivity
 
