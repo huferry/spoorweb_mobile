@@ -170,8 +170,6 @@ class MapDisplayState extends State<MapDisplay> {
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: _kGooglePlex,
-      myLocationEnabled: true,
-      myLocationButtonEnabled: true,
       markers: markers,
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
@@ -211,13 +209,34 @@ class IncidentInfoState extends State<IncidentInfo> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [getIncidentId(), getTitle(), getDetail()]));
+            children: [getTitleBar(), getDetail()]));
   }
+
+  Widget getTitleBar() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [getIncidentId(), getTitle()],
+            ),
+          ),
+          Icon(
+            Icons.fullscreen_outlined,
+            color: Colors.white,
+            size: 40,
+          )
+        ],
+      );
 
   Widget getTitle() => Text(
         incident['title'] ?? '(incident)',
         style: TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            overflow: TextOverflow.visible),
       );
 
   Widget getIncidentId() => Text(
