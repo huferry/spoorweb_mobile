@@ -74,8 +74,8 @@ class Overzicht extends StatelessWidget {
 
   Widget buildUserName(BuildContext context) {
     return Positioned(
-        right: 94,
-        top: 16,
+        right: 92,
+        top: 14,
         child: Text(
           'Kaley (MKS BO)',
           style: TextStyle(
@@ -115,14 +115,21 @@ class MyClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     final path = Path();
 
-    path.moveTo(15, 15);
-    path.lineTo(15, size.height - 15);
-    path.lineTo(size.width - 15, size.height - 15);
+    path.moveTo(20, 15);
+    path.lineTo(15, 20);
+    path.lineTo(15, size.height - 20);
+    path.lineTo(20, size.height - 15);
+    path.lineTo(size.width - 20, size.height - 15);
+    path.lineTo(size.width - 15, size.height - 20);
     path.lineTo(size.width - 15, 60);
-    path.arcToPoint(Offset(size.width - 102, 35),
+    path.arcToPoint(Offset(size.width - 105, 40),
         radius: Radius.circular(10), largeArc: true);
-    path.lineTo(size.width - 202, 35);
-    path.lineTo(size.width - 202, 15);
+    path.lineTo(size.width - 115, 35);
+    path.lineTo(size.width - 185, 35);
+
+    path.arcToPoint(Offset(size.width - 205, 18),
+        radius: Radius.circular(18), largeArc: false);
+    path.lineTo(size.width - 208, 15);
     path.close();
     return path;
   }
@@ -201,7 +208,6 @@ class IncidentInfoState extends State<IncidentInfo> {
         decoration: BoxDecoration(
             color: Color(0xFF737373),
             borderRadius: BorderRadius.circular(10.0)),
-        height: 200,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -224,14 +230,14 @@ class IncidentInfoState extends State<IncidentInfo> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(child: getLeftColumn()),
-            VerticalDivider(width: 1.0),
+            VerticalDivider(width: 4.0),
             Expanded(child: getRighColumn())
           ],
         ),
       );
 
   Widget getLeftColumn() => Container(
-        margin: EdgeInsets.only(top: 5),
+        margin: EdgeInsets.only(top: 5, left: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -246,23 +252,23 @@ class IncidentInfoState extends State<IncidentInfo> {
       );
 
   Widget getRighColumn() => Container(
-        margin: EdgeInsets.only(top: 5),
+        margin: EdgeInsets.only(top: 5, right: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             getLocalTimeField('prognose', incident['prognose']),
             getField('tis', incident['tis']),
-            getField('slachtoffers', incident['slachtofers']),
+            getField('slachtoffers', incident['slachtoffers']),
             getField('impact', incident['impact'])
           ],
         ),
       );
 
   final fieldStyle =
-      TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold);
+      TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold);
 
-  final valueStyle = TextStyle(color: Color(0xFFCECECE), fontSize: 12);
+  final valueStyle = TextStyle(color: Color(0xFFCECECE), fontSize: 14);
 
   Widget getLocalTimeField(String name, String? value) {
     if (value == null) return getField(name, '');
