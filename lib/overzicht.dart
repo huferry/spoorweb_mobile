@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
+import 'IncidentInfo.dart';
 
 class Overzicht extends StatelessWidget {
-  final incidentInfo = IncidentInfo();
+  final incidentInfo = IncidentInfo(showFullscreen: true);
 
   void onMarkerTap(Map<String, dynamic> incident) {
     incidentInfo.onUpdate(incident);
@@ -47,7 +47,7 @@ class Overzicht extends StatelessWidget {
   }
 
   Widget buildBase(BuildContext context, List<Map<String, dynamic>> incidents) {
-    incidentInfo._state.incident = incidents.last;
+    incidentInfo.state.incident = incidents.last;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -176,140 +176,4 @@ class MapDisplayState extends State<MapDisplay> {
       },
     );
   }
-}
-
-class IncidentInfo extends StatefulWidget {
-  final _state = IncidentInfoState();
-
-  void onUpdate(Map<String, dynamic> newIncient) {
-    _state.onUpdate(newIncient);
-  }
-
-  @override
-  State<StatefulWidget> createState() => _state;
-}
-
-class IncidentInfoState extends State<IncidentInfo> {
-  Map<String, dynamic> incident = Map<String, dynamic>();
-
-  void onUpdate(Map<String, dynamic> newIncident) {
-    setState(() {
-      incident = newIncident;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-            color: Color(0xFF737373),
-            borderRadius: BorderRadius.circular(10.0)),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [getTitleBar(), getDetail()]));
-  }
-
-  Widget getTitleBar() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [getIncidentId(), getTitle()],
-            ),
-          ),
-          Icon(
-            Icons.fullscreen_outlined,
-            color: Colors.white,
-            size: 40,
-          )
-        ],
-      );
-
-  Widget getTitle() => Text(
-        incident['title'] ?? '(incident)',
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            overflow: TextOverflow.visible),
-      );
-
-  Widget getIncidentId() => Text(
-        incident['incidentId']?.toString() ?? '(id)',
-        style: TextStyle(color: Colors.white, fontSize: 12),
-      );
-
-  Widget getDetail() => Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(child: getLeftColumn()),
-            VerticalDivider(width: 4.0),
-            Expanded(child: getRighColumn())
-          ],
-        ),
-      );
-
-  Widget getLeftColumn() => Container(
-        margin: EdgeInsets.only(top: 5, left: 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            getLocalTimeField('tijd voorval', incident['datumTijdVoorval']),
-            getField('melder', incident['melder']),
-            getField(
-                'treindienstleidergebied', incident['treindienstleidergebied']),
-            getField('infraclaim', incident['infraclaim'])
-          ],
-        ),
-      );
-
-  Widget getRighColumn() => Container(
-        margin: EdgeInsets.only(top: 5, right: 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            getLocalTimeField('prognose', incident['prognose']),
-            getField('tis', incident['tis']),
-            getField('slachtoffers', incident['slachtoffers']),
-            getField('impact', incident['impact'])
-          ],
-        ),
-      );
-
-  final fieldStyle =
-      TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold);
-
-  final valueStyle = TextStyle(color: Color(0xFFCECECE), fontSize: 14);
-
-  Widget getLocalTimeField(String name, String? value) {
-    if (value == null) return getField(name, '');
-    final format = DateFormat('kk:mm');
-    return getField(name, format.format(DateTime.parse(value).toLocal()));
-  }
-
-  Widget getField(String name, String? value) => Container(
-        margin: EdgeInsets.only(top: 6),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              name,
-              style: fieldStyle,
-            ),
-            Text(
-              value ?? '',
-              style: valueStyle,
-            )
-          ],
-        ),
-      );
 }
