@@ -65,7 +65,12 @@ class IncidentInfoState extends State<IncidentInfo> {
                   },
                   child: Icon(Icons.fullscreen_outlined,
                       color: Colors.white, size: 40))
-              : Text('')
+              : GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.map, color: Colors.white, size: 40),
+                )
         ],
       );
 

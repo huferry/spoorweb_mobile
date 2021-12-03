@@ -100,17 +100,18 @@ class LogList extends StatelessWidget {
         ));
 
     return Expanded(
-      child: Container(
-          margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              color: Color(0xFF737373),
-              borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: logWidgets,
-          )),
+      child: SingleChildScrollView(
+          child: Container(
+              margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                  color: Color(0xFF737373),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: logWidgets,
+              ))),
     );
   }
 
