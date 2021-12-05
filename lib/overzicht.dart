@@ -60,22 +60,22 @@ class Overzicht extends StatelessWidget {
 
   Widget buildUser(BuildContext context) {
     return Positioned(
-        right: 30,
-        top: 20,
+        right: 20,
+        top: 16,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
           child: Image.network(
               'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/kaley-cuoco-1615625941.jpg',
               fit: BoxFit.cover,
-              height: 60,
-              width: 60),
+              height: 70,
+              width: 70),
         ));
   }
 
   Widget buildUserName(BuildContext context) {
     return Positioned(
         right: 92,
-        top: 14,
+        top: 18,
         child: Text(
           'Kaley (MKS BO)',
           style: TextStyle(
@@ -121,15 +121,18 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(20, size.height - 15);
     path.lineTo(size.width - 20, size.height - 15);
     path.lineTo(size.width - 15, size.height - 20);
-    path.lineTo(size.width - 15, 60);
-    path.arcToPoint(Offset(size.width - 105, 40),
-        radius: Radius.circular(10), largeArc: true);
-    path.lineTo(size.width - 115, 35);
-    path.lineTo(size.width - 185, 35);
+    path.lineTo(size.width - 15, 95);
+    path.lineTo(size.width - 60, 95);
 
-    path.arcToPoint(Offset(size.width - 205, 18),
-        radius: Radius.circular(18), largeArc: false);
-    path.lineTo(size.width - 208, 15);
+    path.arcToPoint(Offset(size.width - 110, 45),
+        radius: Radius.circular(50), largeArc: false);
+
+    path.lineTo(size.width - 180, 45);
+
+    path.arcToPoint(Offset(size.width - 210, 15),
+        radius: Radius.circular(30), largeArc: false);
+
+    //path.lineTo(size.width - 210, 15);
     path.close();
     return path;
   }
