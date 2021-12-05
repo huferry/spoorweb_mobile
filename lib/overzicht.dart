@@ -72,8 +72,8 @@ class Overzicht extends StatelessWidget {
 
   Widget buildUser(BuildContext context) {
     return Positioned(
-        right: 20,
-        top: 16,
+        right: 12,
+        top: 10,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
           child: Image.network(
@@ -134,9 +134,9 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(size.width - 20, size.height - 15);
     path.lineTo(size.width - 15, size.height - 20);
     path.lineTo(size.width - 15, 95);
-    path.lineTo(size.width - 60, 95);
+    path.lineTo(size.width - 50, 95);
 
-    path.arcToPoint(Offset(size.width - 110, 45),
+    path.arcToPoint(Offset(size.width - 100, 45),
         radius: Radius.circular(50), largeArc: false);
 
     path.lineTo(size.width - 180, 45);
