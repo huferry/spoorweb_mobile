@@ -40,9 +40,21 @@ class Overzicht extends StatelessWidget {
         return Stack(children: [
           buildBase(context, incidents),
           buildUser(context),
-          buildUserName(context)
+          buildUserName(context),
+          buildLogo()
         ]);
       },
+    );
+  }
+
+  Widget buildLogo() {
+    return Positioned(
+      top: 25,
+      left: 25,
+      child: Image(
+        image: AssetImage('assets/logo.png'),
+        height: 40,
+      ),
     );
   }
 
