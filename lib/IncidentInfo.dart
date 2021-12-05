@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:spoorweb_mobile/incidentView.dart';
+import 'incidentView.dart';
 
 class IncidentInfo extends StatefulWidget {
   final state = IncidentInfoState();

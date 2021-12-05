@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:spoorweb_mobile/IncidentInfo.dart';
+import 'IncidentInfo.dart';
 
 class IncidentView extends StatelessWidget {
   final Map<String, dynamic> incident;
-  final IncidentInfo _incidentInfo = IncidentInfo();
 
   IncidentView(this.incident);
 
@@ -56,7 +55,7 @@ class IncidentView extends StatelessWidget {
 class LogList extends StatelessWidget {
   final int incidentId;
 
-  LogList(int this.incidentId);
+  LogList(this.incidentId);
 
   @override
   Widget build(BuildContext context) {
