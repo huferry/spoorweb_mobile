@@ -59,7 +59,8 @@ class Overzicht extends StatelessWidget {
   }
 
   Widget buildBase(BuildContext context, List<Map<String, dynamic>> incidents) {
-    incidentInfo.state.incident = incidents.last;
+    incidentInfo.state.incident =
+        incidents.isEmpty ? Map<String, dynamic>() : incidents.last;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
