@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nl.prorail.spoorweb">
    <application
-        android:label="spoorweb_mobile"
+        android:label="Spoorweb"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
