@@ -66,7 +66,7 @@ class Overzicht extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(child: IncidentMap(incidents, onMarkerTap)),
-        incidentInfo
+        incidents.isEmpty ? Container() : incidentInfo
       ],
     );
   }

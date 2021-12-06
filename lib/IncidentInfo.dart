@@ -55,22 +55,24 @@ class IncidentInfoState extends State<IncidentInfo> {
               children: [getIncidentId(), getTitle()],
             ),
           ),
-          widget.showFullSreen
-              ? GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return IncidentView(incident);
-                    }));
-                  },
-                  child: Icon(Icons.fullscreen_outlined,
-                      color: Colors.white, size: 40))
-              : GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(Icons.map, color: Colors.white, size: 40),
-                )
+          incident.isEmpty
+              ? Text("")
+              : (widget.showFullSreen
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return IncidentView(incident);
+                        }));
+                      },
+                      child: Icon(Icons.fullscreen_outlined,
+                          color: Colors.white, size: 40))
+                  : GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.map, color: Colors.white, size: 40),
+                    ))
         ],
       );
 
