@@ -18,7 +18,7 @@ class IncidentView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               getMap(),
-              IncidentInfo(incident: incident),
+              IncidentInfo(incidentId: incident['incidentId'].toString()),
               LogList(incident['incidentId'])
             ],
           ),

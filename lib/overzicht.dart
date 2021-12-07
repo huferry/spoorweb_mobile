@@ -7,8 +7,8 @@ import 'IncidentInfo.dart';
 class Overzicht extends StatelessWidget {
   final incidentInfo = IncidentInfo(showFullscreen: true);
 
-  void onMarkerTap(Map<String, dynamic> incident) {
-    incidentInfo.onUpdate(incident);
+  void onMarkerTap(String incidentId) {
+    incidentInfo.onUpdate(incidentId);
   }
 
   @override
@@ -59,14 +59,15 @@ class Overzicht extends StatelessWidget {
   }
 
   Widget buildBase(BuildContext context, List<Map<String, dynamic>> incidents) {
-    incidentInfo.state.incident =
-        incidents.isEmpty ? Map<String, dynamic>() : incidents.last;
+    incidentInfo.state.incidentId =
+        incidents.isEmpty ? "" : incidents.last['incidentId'].toString();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(child: IncidentMap(incidents, onMarkerTap)),
-        incidents.isEmpty ? Container() : incidentInfo
+        incidentInfo
       ],
     );
   }
@@ -108,7 +109,7 @@ class Overzicht extends StatelessWidget {
 
 class IncidentMap extends StatelessWidget {
   final List<Map<String, dynamic>> incidents;
-  final void Function(Map<String, dynamic>) onMarkerTab;
+  final void Function(String) onMarkerTab;
 
   IncidentMap(this.incidents, this.onMarkerTab);
 
@@ -156,7 +157,7 @@ class MyClipper extends CustomClipper<Path> {
 
 class MapDisplay extends StatefulWidget {
   final List<Map<String, dynamic>> incidents;
-  final void Function(Map<String, dynamic>) onMarkerTab;
+  final void Function(String) onMarkerTab;
 
   MapDisplay(this.incidents, this.onMarkerTab);
 
@@ -177,7 +178,7 @@ class MapDisplayState extends State<MapDisplay> {
     final markers = widget.incidents
         .map((i) => Marker(
             infoWindow: InfoWindow(title: i['title']),
-            onTap: () => widget.onMarkerTab(i),
+            onTap: () => widget.onMarkerTab(i['incidentId'].toString()),
             markerId: MarkerId(i['incidentId'].toString()),
             position: LatLng(
                 double.parse(i['latitude']), double.parse(i['longitude']))))

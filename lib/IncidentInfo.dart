@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'incidentView.dart';
@@ -6,16 +7,16 @@ class IncidentInfo extends StatefulWidget {
   final state = IncidentInfoState();
   bool showFullSreen = false;
 
-  IncidentInfo({Map<String, dynamic>? incident, bool showFullscreen = false}) {
-    if (incident != null) {
-      state.incident = incident;
+  IncidentInfo({String incidentId = "", bool showFullscreen = false}) {
+    if (incidentId != "") {
+      state.incidentId = incidentId;
     }
 
     this.showFullSreen = showFullscreen;
   }
 
-  void onUpdate(Map<String, dynamic> newIncient) {
-    state.onUpdate(newIncient);
+  void onUpdate(String incidentId) {
+    state.onUpdate(incidentId);
   }
 
   @override
@@ -23,26 +24,50 @@ class IncidentInfo extends StatefulWidget {
 }
 
 class IncidentInfoState extends State<IncidentInfo> {
+  String incidentId = "";
   Map<String, dynamic> incident = Map<String, dynamic>();
 
-  void onUpdate(Map<String, dynamic> newIncident) {
+  void onUpdate(String newIncidentId) {
     setState(() {
-      incident = newIncident;
+      incidentId = newIncidentId;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-            color: Color(0xFF737373),
-            borderRadius: BorderRadius.circular(10.0)),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [getTitleBar(context), getDetail()]));
+    CollectionReference _incidents =
+        FirebaseFirestore.instance.collection('incidents');
+
+    return incidentId == ""
+        ? Text("")
+        : FutureBuilder<DocumentSnapshot>(
+            future: _incidents.doc(incidentId).get(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text("Something went wrong");
+              }
+
+              if (snapshot.hasData && !snapshot.data!.exists) {
+                return Text("Document does not exist");
+              }
+
+              if (snapshot.connectionState == ConnectionState.done) {
+                incident = snapshot.data!.data() as Map<String, dynamic>;
+                return Container(
+                    margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: Color(0xFF737373),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [getTitleBar(context), getDetail()]));
+              }
+
+              return Text("loading...");
+            });
   }
 
   Widget getTitleBar(BuildContext context) => Row(
