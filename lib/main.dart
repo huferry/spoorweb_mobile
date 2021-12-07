@@ -29,6 +29,9 @@ class CloudMessaging {
 
     messaging.subscribeToTopic("new_incidents");
 
+    var token = await messaging.getToken();
+    print('fcm token: ' + (token ?? '--none--'));
+
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
     } else if (settings.authorizationStatus ==
