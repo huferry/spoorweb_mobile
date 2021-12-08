@@ -35,38 +35,37 @@ class IncidentInfoState extends State<IncidentInfo> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference _incidents =
-        FirebaseFirestore.instance.collection('incidents');
+    Stream<DocumentSnapshot> _incidentStream = FirebaseFirestore.instance
+        .collection('incidents')
+        .doc(incidentId)
+        .snapshots();
 
     return incidentId == ""
         ? Text("")
-        : FutureBuilder<DocumentSnapshot>(
-            future: _incidents.doc(incidentId).get(),
+        : StreamBuilder<DocumentSnapshot>(
+            stream: _incidentStream,
             builder: (BuildContext context,
                 AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.hasError) {
                 return Text("Something went wrong");
               }
 
-              if (snapshot.hasData && !snapshot.data!.exists) {
-                return Text("Document does not exist");
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text('Loading...');
               }
 
-              if (snapshot.connectionState == ConnectionState.done) {
-                incident = snapshot.data!.data() as Map<String, dynamic>;
-                return Container(
-                    margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        color: Color(0xFF737373),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [getTitleBar(context), getDetail()]));
-              }
+              incident = snapshot.data!.data() as Map<String, dynamic>;
 
-              return Text("loading...");
+              return Container(
+                  margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: Color(0xFF737373),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [getTitleBar(context), getDetail()]));
             });
   }
 
